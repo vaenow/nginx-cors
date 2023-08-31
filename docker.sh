@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2086
 
-serverName=nginx-cors-dispatcher
+serverName=nginx-cors-worker
 crAddr=ccr.ccs.tencentyun.com
 version=$1
 namespace=doudou
