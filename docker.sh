@@ -12,6 +12,10 @@ if [ "$1" == "" ]; then
     exit 1
 fi
 
+hash=$(git log | head -n1 | awk '{print substr($2,0,5)}')
+echo $hash
+version=$(date '+%Y%m%d')-$hash-$version
+
 ##################### make DOCKER
 # npm run build:prod
 # mkdir dist
