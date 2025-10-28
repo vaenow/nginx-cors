@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2086
 
-serverName=nginx-cors-dispatcher
+serverName=nginx-cors
 crAddr=ccr.ccs.tencentyun.com
 version=$1
 namespace=doudou
+mode=${2:-dispatcher}
 
 
 if [ "$1" == "" ]; then
     echo "NEED version param !"
+    exit 1
+fi
+
+if [[ "${mode}" != "dispatcher" && "${mode}" != "client" ]]; then
+    echo "Unknown mode '${mode}', allowed values: dispatcher, client"
     exit 1
 fi
 
@@ -23,7 +29,7 @@ version=$(date '+%Y%m%d')-$hash-$version
 # # cp Dockerfile dist/
 # # cp "Privacy Policy - ShopClassic_files" dist/
 
-imagename=${crAddr}/${namespace}/${serverName}:${version}
+imagename=${crAddr}/${namespace}/${serverName}-${mode}:${version}
 
 echo build...
 docker build -t ${imagename} ./
@@ -40,5 +46,4 @@ fi
 ##################### echo
 echo
 echo "${imagename}"
-
 

@@ -10,7 +10,13 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY nginx-*.conf /etc/nginx/conf.d/
+COPY nginx-cache.conf /etc/nginx/conf.d/
+COPY conf/nginx-cors-*.conf /etc/nginx/cors/
+COPY scripts/docker-entrypoint.sh /docker-entrypoint.sh
+
+RUN chmod +x /docker-entrypoint.sh
 
 ENV NGINX_PROXY_CACHE_VALID_TIME 3s
-CMD sed -i.bak s/__NGINX_PROXY_CACHE_VALID_TIME__/$NGINX_PROXY_CACHE_VALID_TIME/g /etc/nginx/conf.d/nginx-cors.conf && nginx -g "daemon off;"
+ENV CORS_MODE dispatcher
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
